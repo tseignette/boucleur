@@ -1,0 +1,14 @@
+@import "node_modules/spectre.css/src/spectre";
+@import "node_modules/spectre.css/src/spectre-icons";
+
+.bg-gray-dark {
+  background: $gray-color !important;
+}
+.btn-xl {
+  $size: 2.5rem;
+  height: $size;
+  width: $size;
+}
+.justify-between {
+  justify-content: space-between;
+}
