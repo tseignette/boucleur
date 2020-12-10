@@ -1,7 +1,13 @@
 {
   "name": "boucleur",
   "version": "1.0.0",
-  "keywords": ["indexed-db", "music-player", "pwa", "scss", "vue"],
+  "keywords": [
+    "indexed-db",
+    "music-player",
+    "pwa",
+    "scss",
+    "vue"
+  ],
   "repository": "https://github.com/tseignette/boucleur",
   "license": "CC0-1.0",
   "author": {
@@ -20,7 +26,8 @@
     "spectre.css": "^0.5.9",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "web-audio-beat-detector": "^8.0.34"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",

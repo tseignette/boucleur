@@ -2,7 +2,7 @@
 <div class="tile tile-centered">
   <div class="tile-content">
     <div class="tile-title">{{ music.name }}</div>
-    <small class="tile-subtitle text-gray">{{ size }} • {{ addedOn }}</small>
+    <small class="tile-subtitle text-gray">{{ music.tempo }} bpm • {{ size }} • {{ addedOn }}</small>
   </div>
 
   <div class="tile-action">

@@ -13,7 +13,12 @@ export class Database {
 
   constructor () {
     this.database = new Dexie('database')
-    this.database.version(1).stores({ musics: '++id, name, addedOn, file' })
+    this.database.version(1).stores({ musics: '++id, addedOn, file, name' })
+    this.database.version(2).stores({ musics: '++id, addedOn, file, name, tempo' }).upgrade(transaction => {
+      return transaction.table('musics').toCollection().modify(music => {
+        music.tempo = 120
+      })
+    })
 
     this.table = this.database.table('musics')
     this.table.mapToClass(Music)
@@ -27,6 +32,7 @@ export class Database {
     this.adding.value = true
 
     try {
+      await music.guessTempo()
       await this.table.add(music)
     } catch (error) {
       alert(error?.name)
@@ -46,6 +52,14 @@ export class Database {
 
     this.listMusics()
     this.updateQuotaAndUsage()
+  }
+
+  async updateMusic (music: Music) {
+    try {
+      await this.table.update(music.id as number, music)
+    } catch (error) {
+      alert(error?.name)
+    }
   }
 
   private async listMusics () {
