@@ -6,11 +6,13 @@ export class Music {
   id!: number
   name: string
   tempo!: number
+  type: string
 
-  constructor (name: string, file: ArrayBuffer) {
+  constructor (name: string, file: ArrayBuffer, type: string) {
     this.addedOn = new Date()
     this.file = file
     this.name = name
+    this.type = type
   }
 
   async guessTempo () {

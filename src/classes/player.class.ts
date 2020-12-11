@@ -9,7 +9,7 @@ export class Player {
   private audio: HTMLAudioElement
 
   constructor (music: Music) {
-    const blob = new Blob([music.file], { type: 'audio/mp3' })
+    const blob = new Blob([music.file], { type: music.type })
 
     this.audio = new Audio()
     this.handleListeners('add')

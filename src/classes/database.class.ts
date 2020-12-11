@@ -19,6 +19,11 @@ export class Database {
         music.tempo = 120
       })
     })
+    this.database.version(3).stores({ musics: '++id, addedOn, file, name, tempo, type' }).upgrade(transaction => {
+      return transaction.table('musics').toCollection().modify(music => {
+        music.type = 'audio/mpeg'
+      })
+    })
 
     this.table = this.database.table('musics')
     this.table.mapToClass(Music)
