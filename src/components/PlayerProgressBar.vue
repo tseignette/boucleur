@@ -1,5 +1,6 @@
 <template>
 <div>
+  <p class="text-center mb-1">{{ music.name }}</p>
   <div @click="setProgress($event)" class="bar c-hand" ref="progressBar">
     <div :style="{ width: progress }" class="bar-item bg-gray-dark"></div>
   </div>
@@ -18,41 +19,38 @@
 </style>
 
 <script lang="ts">
-import { player } from '@/classes/player.class'
+import { Music } from '@/classes/music.class'
+import { Player } from '@/classes/player.class'
 import { Utils } from '@/classes/utils.class'
-import { Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component'
 
+@Options({
+  props: {
+    music: Music,
+    player: Player
+  }
+})
 export default class PlayerProgressBar extends Vue {
+  music!: Music
+  player!: Player
   $refs!: {
     progressBar: HTMLDivElement;
   }
 
   get currentTime () {
-    if (player.currentTime.value !== null) {
-      return Utils.formatTime(player.currentTime.value)
-    }
-
-    return null
+    return Utils.formatTime(this.player.currentTime.value)
   }
 
   get duration () {
-    if (player.duration.value !== null) {
-      return Utils.formatTime(player.duration.value)
-    }
-
-    return null
+    return Utils.formatTime(this.player.duration.value)
   }
 
   get progress () {
-    if (player.progress.value === null) {
-      return ''
-    } else {
-      return `${player.progress.value.toFixed(2)}%`
-    }
+    return `${this.player.progress.value.toFixed(2)}%`
   }
 
   setProgress ($event: MouseEvent) {
-    player.setProgress($event.offsetX / this.$refs.progressBar.clientWidth)
+    this.player.setProgress($event.offsetX / this.$refs.progressBar.clientWidth)
   }
 }
 </script>

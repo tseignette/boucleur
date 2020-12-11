@@ -10,5 +10,6 @@ Install everything with `npm install`, then:
 ## Todo list
 - Project presentation
 - Project description (**README.md**, **package.json**, GitHub project)
-- Detect updates
+- Test with different filetypes
+- Detect PWA updates
 - Add SCSS linter

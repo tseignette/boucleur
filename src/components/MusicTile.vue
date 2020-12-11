@@ -28,7 +28,7 @@
 <script lang="ts">
 import { database } from '@/classes/database.class'
 import { Music } from '@/classes/music.class'
-import { player } from '@/classes/player.class'
+import { state } from '@/classes/state.class'
 import { Utils } from '@/classes/utils.class'
 import { Options, Vue } from 'vue-class-component'
 
@@ -53,7 +53,7 @@ export default class MusicTile extends Vue {
   }
 
   playMusic () {
-    player.playMusic(this.music)
+    state.music.value = this.music
     this.$router.push('/player')
   }
 }

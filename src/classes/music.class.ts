@@ -3,9 +3,9 @@ import { guess } from 'web-audio-beat-detector'
 export class Music {
   addedOn: Date
   file: ArrayBuffer
-  id: number
+  id!: number
   name: string
-  tempo: number
+  tempo!: number
 
   constructor (name: string, file: ArrayBuffer) {
     this.addedOn = new Date()

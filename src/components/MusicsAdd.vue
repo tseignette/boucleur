@@ -26,6 +26,7 @@ export default class MusicsAdd extends Vue {
       return
     }
 
+    // TODO: save file type
     const file = this.$refs.fileInput.files[0]
 
     this.$refs.fileInput.value = ''

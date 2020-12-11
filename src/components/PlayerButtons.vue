@@ -1,7 +1,7 @@
 <template>
 <div class="text-center">
-  <button :title="playing ? 'Pause' : 'Play'" @click="togglePlaying()" class="btn btn-xl btn-primary s-circle">
-    <i :class="{ 'playing': playing }" class="icon icon-arrow-right"></i>
+  <button :title="paused ? 'Play' : 'Pause'" @click="togglePaused()" class="btn btn-xl btn-primary s-circle">
+    <i :class="{ 'paused': paused }" class="icon icon-arrow-right"></i>
   </button>
 </div>
 </template>
@@ -11,7 +11,7 @@ button {
   i {
     transition: transform 0.2s ease;
 
-    &.playing {
+    &:not(.paused) {
       transform: rotate(-180deg);
     }
   }
@@ -19,14 +19,23 @@ button {
 </style>
 
 <script lang="ts">
-import { player } from '@/classes/player.class'
-import { Vue } from 'vue-class-component'
+import { Player } from '@/classes/player.class'
+import { Options, Vue } from 'vue-class-component'
 
+@Options({
+  props: {
+    player: Player
+  }
+})
 export default class PlayerButtons extends Vue {
-  playing = player.playing
+  player!: Player
 
-  togglePlaying () {
-    player.togglePlaying()
+  get paused () {
+    return this.player.paused.value
+  }
+
+  togglePaused () {
+    this.player.togglePaused()
   }
 }
 </script>

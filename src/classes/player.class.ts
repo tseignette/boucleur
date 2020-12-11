@@ -1,47 +1,38 @@
-import { Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { Music } from './music.class'
 
 export class Player {
-  audio: HTMLAudioElement
-  currentTime: Ref<null | number> = ref(null)
-  duration: Ref<null | number> = ref(null)
-  music: Ref<null | Music> = ref(null)
-  playing: Ref<boolean> = ref(false)
-  progress: Ref<null | number> = ref(null)
+  currentTime = ref(0)
+  duration = ref(0)
+  paused = ref(true)
+  progress = ref(0)
+  private audio: HTMLAudioElement
 
-  constructor () {
-    this.audio = new Audio()
-    this.audio.addEventListener('durationchange', this.updateProgress.bind(this))
-    this.audio.addEventListener('error', this.handleError.bind(this))
-    this.audio.addEventListener('pause', this.updatePlaying.bind(this))
-    this.audio.addEventListener('play', this.updatePlaying.bind(this))
-    this.audio.addEventListener('timeupdate', this.updateProgress.bind(this))
-    window.addEventListener('keypress', this.handleKeyPress.bind(this))
-  }
-
-  playMusic (music: Music) {
+  constructor (music: Music) {
     const blob = new Blob([music.file], { type: 'audio/mp3' })
 
+    this.audio = new Audio()
+    this.handleListeners('add')
     this.audio.src = window.URL.createObjectURL(blob)
-    this.music.value = music
-    this.togglePlaying(true)
+  }
+
+  destroy () {
+    this.audio.src = ''
+    this.audio.removeAttribute('src')
+    this.handleListeners('remove')
   }
 
   setProgress (progress: number) {
     this.audio.currentTime = progress * this.audio.duration
   }
 
-  togglePlaying (forceValue?: boolean) {
-    if (forceValue !== undefined) {
-      this.playing.value = forceValue
-    } else {
-      this.playing.value = !this.playing.value
-    }
+  togglePaused () {
+    this.paused.value = !this.paused.value
 
-    if (this.playing.value) {
-      this.audio.play()
-    } else {
+    if (this.paused.value) {
       this.audio.pause()
+    } else {
+      this.audio.play()
     }
   }
 
@@ -52,19 +43,15 @@ export class Player {
       case MediaError.MEDIA_ERR_ABORTED:
         message = 'Audio playing aborted'
         break
-
       case MediaError.MEDIA_ERR_DECODE:
         message = 'Audio decoding error'
         break
-
       case MediaError.MEDIA_ERR_NETWORK:
         message = 'Network error'
         break
-
       case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
         message = 'Source not supported'
         break
-
       default:
         message = 'Audio playing error'
         break
@@ -73,25 +60,31 @@ export class Player {
     alert(message)
   }
 
-  private handleKeyPress ($event: KeyboardEvent) {
-    if ($event.key === ' ' && this.music.value) {
-      this.togglePlaying()
-    }
+  handleListeners (action: 'add' | 'remove') {
+    const functionName = action === 'add' ? 'addEventListener' : 'removeEventListener'
+
+    this.audio[functionName]('durationchange', this.updateDuration.bind(this))
+    this.audio[functionName]('error', this.handleError.bind(this))
+    this.audio[functionName]('pause', this.updatePaused.bind(this))
+    this.audio[functionName]('play', this.updatePaused.bind(this))
+    this.audio[functionName]('timeupdate', this.updateCurrentTime.bind(this))
   }
 
-  private updatePlaying () {
-    this.playing.value = !this.audio.paused
+  private updateCurrentTime () {
+    this.currentTime.value = this.audio.currentTime
+    this.updateProgress()
+  }
+
+  private updateDuration () {
+    this.duration.value = this.audio.duration
+    this.updateProgress()
+  }
+
+  private updatePaused () {
+    this.paused.value = this.audio.paused
   }
 
   private updateProgress () {
-    if (!isNaN(this.audio.currentTime) && !isNaN(this.audio.duration)) {
-      this.currentTime.value = this.audio.currentTime
-      this.duration.value = this.audio.duration
-      this.progress.value = 100 * this.audio.currentTime / this.audio.duration
-    } else {
-      this.progress.value = null
-    }
+    this.progress.value = 100 * this.audio.currentTime / this.audio.duration
   }
 }
-
-export const player = new Player()
