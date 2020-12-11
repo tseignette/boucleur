@@ -1,7 +1,7 @@
 <template>
 <div class="tile tile-centered">
   <div class="tile-content">
-    <div class="tile-title">{{ music.name }}</div>
+    <div :title="music.name" class="tile-title">{{ music.name }}</div>
     <small class="tile-subtitle text-gray">{{ music.tempo }} bpm • {{ size }} • {{ addedOn }}</small>
   </div>
 

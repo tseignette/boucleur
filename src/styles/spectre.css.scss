@@ -1,6 +1,9 @@
 @import "node_modules/spectre.css/src/spectre";
 @import "node_modules/spectre.css/src/spectre-icons";
 
+.align-items-end {
+  align-items: flex-end;
+}
 .bg-gray-dark {
   background: $gray-color !important;
 }
@@ -9,6 +12,11 @@
   height: $size;
   width: $size;
 }
-.justify-between {
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.justify-content-between {
   justify-content: space-between;
 }

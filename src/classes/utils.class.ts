@@ -18,7 +18,7 @@ export class Utils {
   }
 
   static decodeAudioData (data: ArrayBuffer): Promise<false | AudioBuffer> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => { // eslint-disable-next-line
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext || false
 
       if (AudioContext) {
