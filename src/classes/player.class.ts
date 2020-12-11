@@ -1,9 +1,11 @@
 import { ref } from 'vue'
+import { Looper } from './looper.class'
 import { Music } from './music.class'
 
 export class Player {
   currentTime = ref(0)
   duration = ref(0)
+  looper: Looper
   paused = ref(true)
   progress = ref(0)
   private audio: HTMLAudioElement
@@ -14,6 +16,7 @@ export class Player {
     this.audio = new Audio()
     this.handleListeners('add')
     this.audio.src = window.URL.createObjectURL(blob)
+    this.looper = new Looper(this, music)
   }
 
   destroy () {

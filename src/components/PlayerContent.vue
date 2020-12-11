@@ -2,7 +2,7 @@
 <div class="player">
   <PlayerInfo :music="music" :player="player" class="mb-1"/>
   <PlayerProgressBar :player="player" class="mb-2"/>
-  <PlayerOptions :music="music" class="mb-2"/>
+  <PlayerOptions :music="music" :player="player" class="mb-2"/>
   <PlayerButtons :player="player"/>
 </div>
 </template>

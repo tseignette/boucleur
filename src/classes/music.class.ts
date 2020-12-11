@@ -2,15 +2,16 @@ import { guess } from 'web-audio-beat-detector'
 import { Utils } from './utils.class'
 
 export class Music {
-  addedOn: Date
+  addedOn = new Date()
+  endBar = 2
   file: ArrayBuffer
   id!: number
   name: string
+  startBar = 1
   tempo!: number
   type: string
 
   constructor (name: string, file: ArrayBuffer, type: string) {
-    this.addedOn = new Date()
     this.file = file
     this.name = name
     this.type = type
