@@ -17,6 +17,20 @@ export class Utils {
     }
   }
 
+  static decodeAudioData (data: ArrayBuffer): Promise<false | AudioBuffer> {
+    return new Promise((resolve, reject) => {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext || false
+
+      if (AudioContext) {
+        const context = new AudioContext()
+
+        context.decodeAudioData(data, resolve, reject)
+      } else {
+        resolve(false)
+      }
+    })
+  }
+
   static formatSize (size: number) {
     const units = ['o', 'ko', 'Mo', 'Go']
     let i = 0

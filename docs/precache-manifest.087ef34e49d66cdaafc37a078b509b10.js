@@ -1,15 +1,15 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ac3f2afdbbc2b64c4c89",
+    "revision": "6ee756888d8de3ddc488",
     "url": "/boucleur/css/app.22b265f9.css"
   },
   {
-    "revision": "8fc21c8c8df972e83f4d794a25b521ed",
+    "revision": "b0aaa46a7f8d345ea7e0a2988dcac4f3",
     "url": "/boucleur/index.html"
   },
   {
-    "revision": "ac3f2afdbbc2b64c4c89",
-    "url": "/boucleur/js/app.d819e1e1.js"
+    "revision": "6ee756888d8de3ddc488",
+    "url": "/boucleur/js/app.5844b842.js"
   },
   {
     "revision": "6d480caa298d2fd0ddc9",

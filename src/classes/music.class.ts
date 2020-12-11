@@ -1,4 +1,5 @@
 import { guess } from 'web-audio-beat-detector'
+import { Utils } from './utils.class'
 
 export class Music {
   addedOn: Date
@@ -17,11 +18,15 @@ export class Music {
 
   async guessTempo () {
     const fileCopy = this.file.slice(0)
-    const context = new AudioContext()
-    const audioData = await context.decodeAudioData(fileCopy)
-    const result = await guess(audioData)
+    const audioData = await Utils.decodeAudioData(fileCopy)
 
-    this.tempo = result.bpm
+    if (audioData) {
+      const result = await guess(audioData)
+
+      this.tempo = result.bpm
+    } else {
+      this.tempo = 120
+    }
 
     return this
   }

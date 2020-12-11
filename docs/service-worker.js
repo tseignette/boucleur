@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/boucleur/precache-manifest.662fbf1f44f3583dc83693503de2ae14.js"
+  "/boucleur/precache-manifest.087ef34e49d66cdaafc37a078b509b10.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "boucleur"});
