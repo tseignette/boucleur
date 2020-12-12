@@ -15,7 +15,19 @@ export class Looper {
     this.tempo = ref(music.tempo)
   }
 
+  get barDuration () {
+    return 60 / this.tempo.value
+  }
+
+  get endBarTime () {
+    return this.barDuration * (this.endBar.value - 1)
+  }
+
   get nbBars () {
     return Math.floor(this.tempo.value * this.player.duration.value / 60)
+  }
+
+  get startBarTime () {
+    return this.barDuration * (this.startBar.value - 1)
   }
 }
