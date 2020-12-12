@@ -1,5 +1,5 @@
 <template>
-<div @click="setProgress($event)" class="bar c-hand" ref="progressBar">
+<div @click="setProgress($event)" :class="{ 'disabled': looperOn }" class="bar c-hand" ref="progressBar">
   <div :style="{ width: progress }" class="bar-item bg-gray-dark"></div>
   <div v-if="startBarPosition !== null" :style="{ left: startBarPosition }" class="start-bar bg-primary"></div>
   <div v-if="endBarPosition !== null" :style="{ left: endBarPosition }" class="end-bar bg-primary"></div>
@@ -11,6 +11,10 @@
   height: 4.0rem;
   overflow: hidden;
   position: relative;
+
+  &.disabled {
+    pointer-events: none;
+  }
 
   .end-bar, .start-bar {
     height: 100%;
@@ -45,6 +49,10 @@ export default class PlayerProgressBar extends Vue {
 
   get endBarPosition () {
     return this.computeBarPosition(this.player.looper.endBarTime)
+  }
+
+  get looperOn () {
+    return !this.player.looper.paused.value
   }
 
   get progress () {

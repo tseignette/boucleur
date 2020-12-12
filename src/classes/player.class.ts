@@ -25,12 +25,20 @@ export class Player {
     this.handleListeners('remove')
   }
 
+  setCurrentTime (currentTime: number) {
+    this.audio.currentTime = currentTime
+  }
+
   setProgress (progress: number) {
     this.audio.currentTime = progress * this.audio.duration
   }
 
-  togglePaused () {
-    this.paused.value = !this.paused.value
+  togglePaused (forceValue?: boolean) {
+    if (forceValue === undefined) {
+      this.paused.value = !this.paused.value
+    } else {
+      this.paused.value = forceValue
+    }
 
     if (this.paused.value) {
       this.audio.pause()

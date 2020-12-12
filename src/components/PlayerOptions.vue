@@ -9,6 +9,7 @@
       <div class="input-group">
         <input
           v-model.number="tempo"
+          :disabled="looperOn"
           required
           class="form-input"
           id="tempo"
@@ -24,9 +25,9 @@
   <div class="form-group columns">
     <div class="column">
       <label for="startBar" class="form-label">Start bar{{ startBarInterval }}</label>
-
       <input
         v-model.number="startBar"
+        :disabled="looperOn"
         :max="startBarMax"
         required
         class="form-input"
@@ -41,6 +42,7 @@
       <label for="endBar" class="form-label">End bar{{ endBarInterval }}</label>
       <input
         v-model.number="endBar"
+        :disabled="looperOn"
         :max="endBarMax"
         :min="endBarMin"
         required
@@ -96,6 +98,10 @@ export default class PlayerOptions extends Vue {
     const startBar = Validator.startBar(this.startBar, this.nbBars)
 
     return startBar === null ? null : (startBar + 1)
+  }
+
+  get looperOn () {
+    return !this.player.looper.paused.value
   }
 
   get nbBars () {
