@@ -3,6 +3,7 @@ const PrerenderSpaPlugin = require('prerender-spa-plugin')
 const path = require('path')
 
 module.exports = {
+  productionSourceMap: false,
   outputDir: 'docs',
   publicPath: process.env.NODE_ENV === 'production' ? '/boucleur/' : '',
   pwa: {
