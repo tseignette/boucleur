@@ -1,4 +1,4 @@
-import Dexie, { Table } from 'dexie'
+import { Dexie, Table } from 'dexie'
 import { Ref, ref } from 'vue'
 import { Music } from './music.class'
 
