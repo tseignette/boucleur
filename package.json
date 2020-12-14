@@ -21,7 +21,6 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "dexie": "^3.0.3",
-    "prerender-spa-plugin": "^3.4.0",
     "register-service-worker": "^1.7.1",
     "spectre.css": "^0.5.9",
     "vue": "^3.0.0",
@@ -50,6 +49,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0-0",
     "husky": "^4.3.6",
+    "prerender-spa-plugin": "^3.4.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3"
