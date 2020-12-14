@@ -21,10 +21,10 @@ module.exports = {
 
     return {
       plugins: [
-        new PrerenderSpaPlugin(path.resolve(__dirname, 'docs'), [
-          '/',
-          '/player'
-        ])
+        new PrerenderSpaPlugin({
+          staticDir: path.resolve(__dirname, 'docs'),
+          routes: ['/', '/player']
+        })
       ]
     }
   }
