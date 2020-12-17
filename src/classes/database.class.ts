@@ -1,6 +1,7 @@
 import { Dexie, Table } from 'dexie'
 import { Ref, ref } from 'vue'
 import { Music } from './music.class'
+import { state } from './state.class'
 
 export class Database {
   adding = ref(false)
@@ -61,6 +62,10 @@ export class Database {
 
   async deleteMusic (music: Music) {
     try {
+      if (state.music.value?.id === music.id) {
+        state.music.value = null
+      }
+
       await this.table.delete(music.id as number)
     } catch (error) {
       alert(error?.name)
