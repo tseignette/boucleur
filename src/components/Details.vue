@@ -9,7 +9,7 @@
       •
     </template>
 
-    <a class="text-gray" href="https://github.com/tseignette/boucleur" target="_blank">GitHub</a>
+    <a class="text-gray" href="https://github.com/tseignette/boucleur" target="_blank">Version {{ version }}</a>
   </p>
 
 </div>
@@ -18,10 +18,12 @@
 <script lang="ts">
 import { database } from '@/classes/database.class'
 import { Utils } from '@/classes/utils.class'
+import { version } from '../../package.json'
 import { Vue } from 'vue-class-component'
 
 export default class Details extends Vue {
   persisted = database.persisted
+  version = version
 
   get quota () {
     if (database.quota.value !== null) {
