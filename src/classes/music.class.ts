@@ -9,12 +9,10 @@ export class Music {
   name: string
   startBar = 1
   tempo!: number
-  type: string
 
-  constructor (name: string, file: ArrayBuffer, type: string) {
+  constructor (name: string, file: ArrayBuffer) {
     this.file = file
     this.name = name
-    this.type = type
   }
 
   async guessTempo () {

@@ -30,6 +30,11 @@ export class Database {
         music.startBar = 1
       })
     })
+    this.database.version(5).stores({ musics: '++id, addedOn, endBar, file, name, startBar, tempo' }).upgrade(transaction => {
+      return transaction.table('musics').toCollection().modify(music => {
+        delete music.type
+      })
+    })
 
     this.table = this.database.table('musics')
     this.table.mapToClass(Music)

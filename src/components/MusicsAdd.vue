@@ -1,6 +1,6 @@
 <template>
 <div class="text-center">
-  <input @change="addMusic()" class="d-none" ref="fileInput" type="file">
+  <input @change="addMusic()" accept=".mp3" class="d-none" ref="fileInput" type="file">
 
   <button :class="{ loading: adding || musics === null }" @click="$refs.fileInput.click()" class="btn btn-lg btn-primary btn-action s-circle" title="Add a music" type="button">
     <i class="icon icon-plus"></i>
@@ -27,7 +27,7 @@ export default class MusicsAdd extends Vue {
     }
 
     const file = this.$refs.fileInput.files[0]
-    const music = new Music(file.name, await Utils.arrayBuffer(file), file.type)
+    const music = new Music(file.name, await Utils.arrayBuffer(file))
 
     this.$refs.fileInput.value = ''
     await database.addMusic(music)

@@ -1,3 +1,4 @@
+import { Howl } from 'howler'
 import { ref } from 'vue'
 import { Looper } from './looper.class'
 import { Music } from './music.class'
@@ -5,32 +6,38 @@ import { Music } from './music.class'
 export class Player {
   currentTime = ref(0)
   duration = ref(0)
+  loading = ref(true)
   looper: Looper
   paused = ref(true)
   progress = ref(0)
-  private audio: HTMLAudioElement
+  private interval?: number
+  private player: Howl
 
   constructor (music: Music) {
-    const blob = new Blob([music.file], { type: music.type })
+    const blob = new Blob([music.file])
 
-    this.audio = new Audio()
-    this.handleListeners('add')
-    this.audio.src = window.URL.createObjectURL(blob)
     this.looper = new Looper(this, music)
+    this.player = new Howl({
+      format: ['mp3'],
+      src: window.URL.createObjectURL(blob)
+    })
+    this.handleListeners('add')
+    this.player.once('load', this.onLoad.bind(this))
   }
 
   destroy () {
-    this.audio.src = ''
-    this.audio.removeAttribute('src')
+    this.player.unload()
+    this.clearInterval()
     this.handleListeners('remove')
   }
 
   setCurrentTime (currentTime: number) {
-    this.audio.currentTime = currentTime
+    this.player.seek(currentTime)
+    this.updateCurrentTime()
   }
 
   setProgress (progress: number) {
-    this.audio.currentTime = progress * this.audio.duration
+    this.setCurrentTime(progress * this.duration.value)
   }
 
   togglePaused (forceValue?: boolean) {
@@ -41,61 +48,58 @@ export class Player {
     }
 
     if (this.paused.value) {
-      this.audio.pause()
+      this.player.pause()
+      this.clearInterval()
     } else {
-      this.audio.play()
+      this.player.play()
+      this.setInterval()
     }
   }
 
-  private handleError () {
-    let message
-
-    switch (this.audio.error?.code) {
-      case MediaError.MEDIA_ERR_ABORTED:
-        message = 'Audio playing aborted'
-        break
-      case MediaError.MEDIA_ERR_DECODE:
-        message = 'Audio decoding error'
-        break
-      case MediaError.MEDIA_ERR_NETWORK:
-        message = 'Network error'
-        break
-      case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
-        message = 'Source not supported'
-        break
-      default:
-        message = 'Audio playing error'
-        break
-    }
-
-    alert(message)
+  private clearInterval () {
+    clearInterval(this.interval)
   }
 
-  handleListeners (action: 'add' | 'remove') {
-    const functionName = action === 'add' ? 'addEventListener' : 'removeEventListener'
+  private errorHandler (soundId: number, error: unknown) {
+    alert(error)
+  }
 
-    this.audio[functionName]('durationchange', this.updateDuration.bind(this))
-    this.audio[functionName]('error', this.handleError.bind(this))
-    this.audio[functionName]('pause', this.updatePaused.bind(this))
-    this.audio[functionName]('play', this.updatePaused.bind(this))
-    this.audio[functionName]('timeupdate', this.updateCurrentTime.bind(this))
+  private handleListeners (action: 'add' | 'remove') {
+    const fn = action === 'add' ? 'on' : 'off'
+
+    this.player[fn]('end', this.onEnd.bind(this))
+    this.player[fn]('loaderror', this.errorHandler)
+    this.player[fn]('playerror', this.errorHandler)
+  }
+
+  private onEnd () {
+    this.clearInterval()
+    this.paused.value = true
+  }
+
+  private onLoad () {
+    this.updateCurrentTime()
+    this.updateDuration()
+    this.loading.value = false
+  }
+
+  private setInterval () {
+    this.interval = setInterval(() => {
+      this.updateCurrentTime()
+    }, 100)
   }
 
   private updateCurrentTime () {
-    this.currentTime.value = this.audio.currentTime
+    this.currentTime.value = this.player.seek() as number
     this.updateProgress()
   }
 
   private updateDuration () {
-    this.duration.value = this.audio.duration
+    this.duration.value = this.player.duration()
     this.updateProgress()
   }
 
-  private updatePaused () {
-    this.paused.value = this.audio.paused
-  }
-
   private updateProgress () {
-    this.progress.value = 100 * this.audio.currentTime / this.audio.duration
+    this.progress.value = 100 * this.currentTime.value / this.duration.value
   }
 }

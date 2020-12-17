@@ -1,9 +1,13 @@
 <template>
 <div class="player">
-  <PlayerInfo :music="music" :player="player" class="mb-1"/>
-  <PlayerProgressBar :player="player" class="mb-2"/>
-  <PlayerOptions :music="music" :player="player" class="mb-2"/>
-  <PlayerButtons :player="player"/>
+  <div v-if="loading" class="loading"></div>
+
+  <template v-else>
+    <PlayerInfo :music="music" :player="player" class="mb-1"/>
+    <PlayerProgressBar :player="player" class="mb-2"/>
+    <PlayerOptions :music="music" :player="player" class="mb-2"/>
+    <PlayerButtons :player="player"/>
+  </template>
 </div>
 </template>
 
@@ -46,6 +50,10 @@ export default class PlayerContent extends Vue {
 
   unmounted () {
     this.player.destroy()
+  }
+
+  get loading () {
+    return this.player.loading.value
   }
 }
 </script>
